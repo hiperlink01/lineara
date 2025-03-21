@@ -2,26 +2,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-int Count_Lines(int** array){
-
-    //to abstract away calculations of array size
-
-    int size = sizeof(array) / sizeof(*array);
-    
-    return size;
-
-}
-
-int Count_Collumns(int* array){
-
-    //to abstract away calculations of array size
-
-    int size = sizeof(array) / sizeof(*array);
-    
-    return size;
-
-}
-
 int** Create_Matrix(int lines, int collumns){
 
     //allocating memory for main array (lines), then for each array inside main array (collumns)
@@ -42,8 +22,8 @@ int** Create_Aux_Matrix(int** original_matrix){
 
     int** aux_matrix = Create_Matrix(3, 3);
     
-    for (int i = 0; i < Count_Lines(original_matrix); i++) {
-        for (int j = 0; j < Count_Collumns(*original_matrix); j++) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
             
             aux_matrix[i][j] = original_matrix[i][j];
 
@@ -70,22 +50,9 @@ void Free_Matrix(int** matrix){
 
 int** Sum_Subtract_Matrices(int** L_matrix, int sum_or_subtract, int** R_matrix){
     
-/*  
+  
     int** L_matrix_aux = Create_Aux_Matrix(L_matrix);
     int** R_matrix_aux = Create_Aux_Matrix(R_matrix);
-*/
-
-    int** L_matrix_aux = Create_Matrix(3, 3);
-    int** R_matrix_aux = Create_Matrix(3, 3);
-
-    for (int i=0; i<3; i++){
-        for (int j=0; j<3; j++){
-
-            L_matrix_aux[i][j] = L_matrix[i][j];
-            R_matrix_aux[i][j] = R_matrix[i][j];
-
-        }
-    }
 
     int** result_matrix = Create_Matrix(3, 3);
 
@@ -120,22 +87,8 @@ int** Sum_Subtract_Matrices(int** L_matrix, int sum_or_subtract, int** R_matrix)
 
 int** Multiply_Matrices(int** L_matrix, int** R_matrix){
 
-    /*  
     int** L_matrix_aux = Create_Aux_Matrix(L_matrix);
     int** R_matrix_aux = Create_Aux_Matrix(R_matrix);
-*/
-
-    int** L_matrix_aux = Create_Matrix(3, 3);
-    int** R_matrix_aux = Create_Matrix(3, 3);
-
-    for (int i=0; i<3; i++){
-        for (int j=0; j<3; j++){
-
-            L_matrix_aux[i][j] = L_matrix[i][j];
-            R_matrix_aux[i][j] = R_matrix[i][j];
-
-        }
-    }
 
     int** result_matrix = Create_Matrix(3, 3);
 
@@ -177,26 +130,12 @@ int** Multiply_Matrices(int** L_matrix, int** R_matrix){
 
 int** Commute_Anticommute_Matrices(int** L_matrix, int commute_or_anticommute, int** R_matrix){
 
-/*  
     int** L_matrix_aux = Create_Aux_Matrix(L_matrix);
     int** R_matrix_aux = Create_Aux_Matrix(R_matrix);
-*/
-
-    int** L_matrix_aux = Create_Matrix(3, 3);
-    int** R_matrix_aux = Create_Matrix(3, 3);
-
-    for (int i=0; i<3; i++){
-        for (int j=0; j<3; j++){
-
-            L_matrix_aux[i][j] = L_matrix[i][j];
-            R_matrix_aux[i][j] = R_matrix[i][j];
-
-        }
-    }
 
     int** result_matrix = Create_Matrix(3, 3);
 
-    //commutation is arbitrarily represented as < 0 (negative numbers) because [A, B] = AB - BA
+    //commutation is arbitrarily represented as < 0 (negatives) because [A, B] = AB - BA
 
     if(commute_or_anticommute < 0){
 
@@ -209,7 +148,7 @@ int** Commute_Anticommute_Matrices(int** L_matrix, int commute_or_anticommute, i
 
     }
 
-    //anticommutation is arbitrarily represented as >= 0 (non-negative numbers) because {A, B} = AB + BA
+    //anticommutation is arbitrarily represented as >= 0 (non-negatives) because {A, B} = AB + BA
 
     else if(commute_or_anticommute >= 0){
 
