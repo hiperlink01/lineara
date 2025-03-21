@@ -38,7 +38,7 @@ void Free_Matrix(int** matrix){
 
     //freeing memory from arrays of each i, then from the main array
 
-    for (int i = 0; i < Count_Lines(matrix); i++){ 
+    for (int i = 0; i < 3; i++){ 
     
         free(matrix[i]);
     
@@ -179,10 +179,6 @@ int main(){
     int** matrix_B = Create_Matrix(3, 3);
     int** result_matrix = NULL;
 
-    /*Auxiliar matrices created for persistance of original data
-    int** matrix_A_aux = Create_Matrix(3, 3);
-    int** matrix_B_aux = Create_Matrix(3, 3);*/
-
     //User inserts data in matrices A and B
 
     printf("For matrix A:\n\n");
@@ -207,9 +203,6 @@ int main(){
         printf("\n");
     }
 
-    printf("%d", Count_Lines(matrix_B));
-    printf("%d", Count_Collumns(*matrix_B));
-
     printf("\nFor matrix B:\n\n");
 
     for (int i=0; i<3; i++){
@@ -232,9 +225,6 @@ int main(){
         }
         printf("\n");
     }
-
-    printf("%d", Count_Lines(matrix_B));
-    printf("%d", Count_Collumns(*matrix_B));
 
     int select_op = 0;
 
