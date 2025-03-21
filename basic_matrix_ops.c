@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-int How_Many_Lines(int** array){
+int Count_Lines(int** array){
 
     //to abstract away calculations of array size
 
@@ -12,7 +12,7 @@ int How_Many_Lines(int** array){
 
 }
 
-int How_Many_Collumns(int* array){
+int Count_Collumns(int* array){
 
     //to abstract away calculations of array size
 
@@ -42,8 +42,8 @@ int** Create_Aux_Matrix(int** original_matrix){
 
     int** aux_matrix = Create_Matrix(3, 3);
     
-    for (int i = 0; i < How_Many_Lines(original_matrix); i++) {
-        for (int j = 0; j < How_Many_Collumns(*original_matrix); j++) {
+    for (int i = 0; i < Count_Lines(original_matrix); i++) {
+        for (int j = 0; j < Count_Collumns(*original_matrix); j++) {
             
             aux_matrix[i][j] = original_matrix[i][j];
 
@@ -58,7 +58,7 @@ void Free_Matrix(int** matrix){
 
     //freeing memory from arrays of each i, then from the main array
 
-    for (int i = 0; i < How_Many_Lines(matrix); i++){ 
+    for (int i = 0; i < Count_Lines(matrix); i++){ 
     
         free(matrix[i]);
     
@@ -268,6 +268,9 @@ int main(){
         printf("\n");
     }
 
+    printf("%d", Count_Lines(matrix_B));
+    printf("%d", Count_Collumns(*matrix_B));
+
     printf("\nFor matrix B:\n\n");
 
     for (int i=0; i<3; i++){
@@ -290,6 +293,9 @@ int main(){
         }
         printf("\n");
     }
+
+    printf("%d", Count_Lines(matrix_B));
+    printf("%d", Count_Collumns(*matrix_B));
 
     int select_op = 0;
 
