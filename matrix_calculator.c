@@ -202,34 +202,11 @@ int main(){
     scanf("%d", &B_collumn_qtt);
 
     /*
-    Allocatting memory for the pointer of pointers;
-    i.e. creating array of pointers;
-    for matrix A and B
+    Allocatting memory for matrix with Create_Matrix() function
     */
 
-    matrix_A = (int**)malloc( sizeof(int*) * A_line_qtt );
-
-    matrix_B = (int**)malloc( sizeof(int*) * B_line_qtt );
-
-    /*
-    Allocatting memory for each pointer inside the array of pointers;
-    i.e. creating arrays inside the array;
-    i.e. properly creating the matrix;
-    for matrix A and B
-    */
-    
-    for (int i=0; i<A_line_qtt; i++){
-    
-        matrix_A[i] = malloc(sizeof(int) * A_collumn_qtt);
-
-    }
-
-    
-    for (int i=0; i<B_line_qtt; i++){
-    
-        matrix_B[i] = malloc(sizeof(int) * B_collumn_qtt);
-    
-    }
+    matrix_A = Create_Matrix(A_line_qtt, A_collumn_qtt);
+    matrix_B = Create_Matrix(B_line_qtt, B_collumn_qtt);
 
     //User inserts data in matrices A and B
 
@@ -254,6 +231,58 @@ int main(){
         
         }
     }
+
+    //Initiating operation section
+
+    int select_op = 0;
+    int** result_matrix = NULL;
+
+    printf("\nSelect operation:\n\n[1] A+B\n[2] AxB\n[3] BxA\n[4] [A,B]\n([0] to close program)\n\n");
+    scanf("%d", &select_op);
+
+    switch (select_op) {
+        
+        case 0:
+            Free_Matrix(matrix_A);
+            Free_Matrix(matrix_B);
+            return 0;
+        
+        case 1: 
+            result_matrix = Sum_Subtract_Matrices(matrix_A, +1, matrix_B);
+            break;
+        
+        case 2:
+            result_matrix = Multiply_Matrices(matrix_A, matrix_B);
+            break;
+        
+        case 3:
+            result_matrix = Multiply_Matrices(matrix_B, matrix_A);
+            break;
+
+        case 4:   
+            result_matrix = Commute_Anticommute_Matrices(matrix_A, -1, matrix_B);
+            break;
+        
+        default: 
+            Free_Matrix(matrix_A);
+            Free_Matrix(matrix_B);
+            return 0;
+
+    }
+
+    printf("\n");
+
+    for (int i=0; i<3; i++){
+        for (int j=0; j<3; j++){
+
+            printf("%d ", result_matrix[i][j]);
+        
+        }
+        printf("\n");
+    }
+
+    Free_Matrix(matrix_A);
+    Free_Matrix(matrix_B);
 
     return 0;
 }
