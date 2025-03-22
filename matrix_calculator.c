@@ -29,12 +29,12 @@ int** Create_Matrix(int lines, int collumns){
 
 }
 
-int** Create_Aux_Matrix(int** original_matrix){
+int** Create_Aux_Matrix(int** original_matrix, int lines, int collumns){
 
-    int** aux_matrix = Create_Matrix(3, 3);
+    int** aux_matrix = Create_Matrix(lines, collumns);
     
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
+    for (int i = 0; i < lines; i++) {
+        for (int j = 0; j < collumns; j++) {
             
             aux_matrix[i][j] = original_matrix[i][j];
 
@@ -45,11 +45,11 @@ int** Create_Aux_Matrix(int** original_matrix){
 
 }
 
-void Free_Matrix(int** matrix){
+void Free_Matrix(int** matrix, int lines){
 
     //freeing memory from arrays of each i, then from the main array
 
-    for (int i = 0; i < 3; i++){ 
+    for (int i = 0; i < lines; i++){ 
     
         free(matrix[i]);
     
@@ -59,18 +59,17 @@ void Free_Matrix(int** matrix){
 
 }
 
-int** Sum_Subtract_Matrices(int** L_matrix, int sum_or_subtract, int** R_matrix){
+int** Sum_Subtract_Matrices(int** L_matrix, int sum_or_subtract, int** R_matrix, int lines, int collumns){
     
-  
-    int** L_matrix_aux = Create_Aux_Matrix(L_matrix);
-    int** R_matrix_aux = Create_Aux_Matrix(R_matrix);
+    int** L_matrix_aux = Create_Aux_Matrix(L_matrix, lines, collumns);
+    int** R_matrix_aux = Create_Aux_Matrix(R_matrix, lines, collumns);
 
-    int** result_matrix = Create_Matrix(3, 3);
+    int** result_matrix = Create_Matrix(lines, collumns);
 
     if(sum_or_subtract >= 0){
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++){
+        for (int i = 0; i < lines; i++) {
+            for (int j = 0; j < collumns; j++){
 
                 result_matrix[i][j] = L_matrix_aux[i][j] + R_matrix_aux[i][j];
 
@@ -80,8 +79,8 @@ int** Sum_Subtract_Matrices(int** L_matrix, int sum_or_subtract, int** R_matrix)
 
     else if(sum_or_subtract < 0) {
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++){
+        for (int i = 0; i < lines; i++) {
+            for (int j = 0; j < collumns; j++){
 
                 result_matrix[i][j] = L_matrix_aux[i][j] - R_matrix_aux[i][j];
 
@@ -89,29 +88,29 @@ int** Sum_Subtract_Matrices(int** L_matrix, int sum_or_subtract, int** R_matrix)
         }
     }
 
-    Free_Matrix(L_matrix_aux);
-    Free_Matrix(R_matrix_aux);
+    Free_Matrix(L_matrix_aux, lines);
+    Free_Matrix(R_matrix_aux, lines);
 
     return result_matrix;
 
 }
 
-int** Multiply_Matrices(int** L_matrix, int** R_matrix){
+int** Multiply_Matrices(int** L_matrix, int L_lines, int L_collumns, int** R_matrix, int R_lines, int R_collumns){
 
-    int** L_matrix_aux = Create_Aux_Matrix(L_matrix);
-    int** R_matrix_aux = Create_Aux_Matrix(R_matrix);
+    int** L_matrix_aux = Create_Aux_Matrix(L_matrix, L_lines, L_collumns);
+    int** R_matrix_aux = Create_Aux_Matrix(R_matrix, R_lines, R_collumns);
 
-    int** result_matrix = Create_Matrix(3, 3);
+    int** result_matrix = Create_Matrix(L_lines, R_collumns);
 
 
     for (
         int i_of_L = 0;
-        i_of_L < 3;
+        i_of_L < L_lines;
         i_of_L++
     ){
         for (
             int j_of_R = 0;
-            j_of_R < 3;
+            j_of_R < R_collumns;
             j_of_R++
         ){
           
@@ -119,7 +118,7 @@ int** Multiply_Matrices(int** L_matrix, int** R_matrix){
     
             for (
                 int iterator = 0;
-                iterator < 3;
+                iterator < L_collumns;
                 iterator++
             ){
     
@@ -132,17 +131,17 @@ int** Multiply_Matrices(int** L_matrix, int** R_matrix){
         }
     }
 
-    Free_Matrix(L_matrix_aux);
-    Free_Matrix(R_matrix_aux);
+    Free_Matrix(L_matrix_aux, L_lines);
+    Free_Matrix(R_matrix_aux, R_lines);
 
     return result_matrix;
 
 }
 
-int** Commute_Anticommute_Matrices(int** L_matrix, int commute_or_anticommute, int** R_matrix){
+int** Commute_Anticommute_Matrices(int** L_matrix, int commute_or_anticommute, int** R_matrix, int lines_n_collumns){
 
-    int** L_matrix_aux = Create_Aux_Matrix(L_matrix);
-    int** R_matrix_aux = Create_Aux_Matrix(R_matrix);
+    int** L_matrix_aux = Create_Aux_Matrix(L_matrix, lines_n_collumns, lines_n_collumns);
+    int** R_matrix_aux = Create_Aux_Matrix(R_matrix, lines_n_collumns, lines_n_collumns);
 
     int** result_matrix = Create_Matrix(3, 3);
 
@@ -151,10 +150,23 @@ int** Commute_Anticommute_Matrices(int** L_matrix, int commute_or_anticommute, i
     if(commute_or_anticommute < 0){
 
         result_matrix =
+
         Sum_Subtract_Matrices(
-            Multiply_Matrices(L_matrix_aux, R_matrix_aux),
+
+            Multiply_Matrices(
+                L_matrix_aux, lines_n_collumns, lines_n_collumns,
+                R_matrix_aux, lines_n_collumns, lines_n_collumns
+            ),
+
             -1,
-            Multiply_Matrices(R_matrix_aux, L_matrix_aux)
+
+            Multiply_Matrices(
+                R_matrix_aux, lines_n_collumns, lines_n_collumns,
+                L_matrix_aux, lines_n_collumns, lines_n_collumns
+            ),
+
+            lines_n_collumns, lines_n_collumns
+        
         );
 
     }
@@ -163,17 +175,28 @@ int** Commute_Anticommute_Matrices(int** L_matrix, int commute_or_anticommute, i
 
     else if(commute_or_anticommute >= 0){
 
-        result_matrix = 
         Sum_Subtract_Matrices(
-            Multiply_Matrices(L_matrix_aux, R_matrix_aux),
+
+            Multiply_Matrices(
+                L_matrix_aux, lines_n_collumns, lines_n_collumns,
+                R_matrix_aux, lines_n_collumns, lines_n_collumns
+            ),
+
             +1,
-            Multiply_Matrices(R_matrix_aux, L_matrix_aux)
+
+            Multiply_Matrices(
+                R_matrix_aux, lines_n_collumns, lines_n_collumns,
+                L_matrix_aux, lines_n_collumns, lines_n_collumns
+            ),
+
+            lines_n_collumns, lines_n_collumns
+        
         );
 
     }
 
-    Free_Matrix(L_matrix_aux);
-    Free_Matrix(R_matrix_aux);
+    Free_Matrix(L_matrix_aux, lines_n_collumns);
+    Free_Matrix(R_matrix_aux, lines_n_collumns);
 
     return result_matrix;
 
@@ -243,29 +266,61 @@ int main(){
     switch (select_op) {
         
         case 0:
-            Free_Matrix(matrix_A);
-            Free_Matrix(matrix_B);
+            Free_Matrix(matrix_A, A_line_qtt);
+            Free_Matrix(matrix_B, B_line_qtt);
             return 0;
         
         case 1: 
-            result_matrix = Sum_Subtract_Matrices(matrix_A, +1, matrix_B);
+            result_matrix =
+            
+            Sum_Subtract_Matrices(
+            
+                matrix_A, 
+                +1,
+                matrix_B, 
+            
+                A_line_qtt, A_collumn_qtt
+            );
             break;
         
         case 2:
-            result_matrix = Multiply_Matrices(matrix_A, matrix_B);
+            result_matrix = Multiply_Matrices(
+                
+                matrix_A, A_line_qtt, A_collumn_qtt,
+//              x
+                matrix_B, B_line_qtt, B_collumn_qtt
+            
+            );
+
             break;
         
         case 3:
-            result_matrix = Multiply_Matrices(matrix_B, matrix_A);
+            result_matrix = Multiply_Matrices(
+                
+                matrix_B, B_line_qtt, B_collumn_qtt,
+//              x
+                matrix_A, A_line_qtt, A_collumn_qtt
+            
+            );
+
             break;
 
         case 4:   
-            result_matrix = Commute_Anticommute_Matrices(matrix_A, -1, matrix_B);
+            
+            result_matrix = Commute_Anticommute_Matrices(
+                
+                matrix_A,
+                -1,
+                matrix_B,
+
+                A_line_qtt
+            );
+            
             break;
         
         default: 
-            Free_Matrix(matrix_A);
-            Free_Matrix(matrix_B);
+            Free_Matrix(matrix_A, A_line_qtt);
+            Free_Matrix(matrix_B, B_line_qtt);
             return 0;
 
     }
@@ -281,8 +336,8 @@ int main(){
         printf("\n");
     }
 
-    Free_Matrix(matrix_A);
-    Free_Matrix(matrix_B);
+    Free_Matrix(matrix_A, A_line_qtt);
+    Free_Matrix(matrix_B, B_line_qtt);
 
     return 0;
 }
