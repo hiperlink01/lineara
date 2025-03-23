@@ -6,6 +6,7 @@
 
 # Others
 *.vscode
+*.txt
 
 # Prerequisites
 *.d
