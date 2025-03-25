@@ -1,6 +1,17 @@
 #ifndef MTXMATH_H
 #define MTXMATH_H
 
+int** Transpose_Matrix(
+    int** matrix,
+    int lines, int collumns
+);
+
+int** Multiply_Scalar(
+    int** matrix,
+    int lines, int collumns,
+    int scalar
+);
+
 int** Sum_Subtract_Matrices(
     int** L_matrix, 
     int sum_or_subtract, 

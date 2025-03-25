@@ -4,6 +4,47 @@
 #include "../include/mtxmem.h"
 #include "../include/mtxmath.h"
 
+int** Transpose_Matrix(int** matrix, int lines, int collumns){
+
+    int** matrix_aux = Create_Aux_Matrix(matrix, lines, collumns);
+
+    int result_lines = collumns;
+    int result_collumns = lines;
+
+    int** result_matrix = Create_Matrix(result_lines, result_collumns);
+
+    for (int i = 0; i < lines; i++){
+        for (int j = 0; j < collumns; j++){
+         
+            result_matrix[j][i] = matrix_aux[i][j];
+
+        }
+    }
+
+    Free_Matrix(matrix_aux, lines);
+
+    return result_matrix;
+}
+
+int** Multiply_Scalar(int** matrix, int lines, int collumns, int scalar){
+
+    int** matrix_aux = Create_Aux_Matrix(matrix, lines, collumns);
+    int** result_matrix = Create_Matrix(lines, collumns);
+
+    for (int i = 0; i < lines; i++){
+        for (int j = 0; j < collumns; j++){
+         
+            result_matrix[i][j] = scalar * matrix_aux[i][j];
+
+        }
+    }
+
+    Free_Matrix(matrix_aux, lines);
+
+    return result_matrix;
+
+}
+
 int** Sum_Subtract_Matrices(int** L_matrix, int sum_or_subtract, int** R_matrix, int lines, int collumns){
     
     int** L_matrix_aux = Create_Aux_Matrix(L_matrix, lines, collumns);
